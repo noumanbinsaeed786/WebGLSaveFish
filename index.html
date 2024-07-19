@@ -3,28 +3,57 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | BubbleShooter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity WebGL Player | SaveFish</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
     <style>
- #unity-body-style{
-    display: flex;
-    justify-content: center;
-    margin: 0;
-}
- #unity-container{
-    height: 100vh;
-    width: 100%;
- }
- #unity-canvas{
-    width: 100%;
-    height: 100%;
-    background-color: #030b1e;
- }
+      body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #030b1e;
+      }
 
+      #unity-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      #unity-canvas {
+        width: 100%;
+        height: 100%;
+        max-width: 100vw;
+        max-height: 100vh;
+        background-color: #030b1e;
+      }
+
+      #unity-loading-bar {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      /*
+      #unity-logo, #unity-progress-bar-empty, #unity-progress-bar-full {
+        display: none;
+      }
+        */
     </style>
   </head>
-  <body id="unity-body-style">
+  <body>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas"></canvas>
       <div id="unity-loading-bar">
@@ -40,12 +69,18 @@
       var loadingBar = document.querySelector("#unity-loading-bar");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
+      function resizeCanvas() {
+        var windowWidth = window.innerWidth;
+        var windowHeight = window.innerHeight;
+        var canvasWidth = windowWidth;
+        var canvasHeight = windowHeight;
+
+        canvas.style.width = canvasWidth + "px";
+        canvas.style.height = canvasHeight + "px";
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
 
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/Save Fish.loader.js";
@@ -68,19 +103,19 @@
      // }
      loadingBar.style.display = "block";
 
-var script = document.createElement("script");
-script.src = loaderUrl;
-script.onload = () => {
-  createUnityInstance(canvas, config, (progress) => {
-    progressBarFull.style.width = 100 * progress + "%";
-  }).then((unityInstance) => {
-    loadingBar.style.display = "none";
-  
-  }).catch((message) => {
-    alert(message);
-  });
-};
-document.body.appendChild(script);
-</script>
-</body>
+     var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+        
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
 </html>
